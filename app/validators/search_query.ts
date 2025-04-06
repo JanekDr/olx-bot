@@ -3,8 +3,8 @@ import vine from "@vinejs/vine";
 export const createSearchQueryValidator = vine.compile(
   vine.object({
     name: vine.string().trim(),
-    priceMin: vine.number().positive(),
-    priceMax: vine.number().positive(),
+    minPrice: vine.number().positive(),
+    maxPrice: vine.number().positive(),
     locationId: vine.number(),
   }),
 );
