@@ -9,4 +9,19 @@ export default class SearchQueriesController {
     const searchQuery = await SearchQuery.create(data);
     return response.created(searchQuery);
   }
+
+  async index({ response }: HttpContext) {
+    const searchQueries = await SearchQuery.all();
+    return response.json(searchQueries);
+  }
+
+  async show({ params, response }: HttpContext) {
+    const searchQuery = await SearchQuery.find(params.id);
+
+    if (searchQuery === null) {
+      return response.status(404).json({ message: "Search query not found" });
+    }
+
+    return response.json(searchQuery);
+  }
 }
