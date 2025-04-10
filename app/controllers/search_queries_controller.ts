@@ -10,8 +10,10 @@ export default class SearchQueriesController {
     return response.created(searchQuery);
   }
 
-  async index({ response }: HttpContext) {
-    const searchQueries = await SearchQuery.all();
+  async index({ request, response }: HttpContext) {
+    const page = request.input("page", 1) as number;
+    const limit = 10;
+    const searchQueries = await SearchQuery.query().paginate(page, limit);
     return response.json(searchQueries);
   }
 
