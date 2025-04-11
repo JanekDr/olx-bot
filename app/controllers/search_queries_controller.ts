@@ -20,23 +20,15 @@ export default class SearchQueriesController {
     return response.json(searchQueries);
   }
 
-  async show({ params, response }: HttpContext) {
-    const searchQuery = await SearchQuery.find(params.id);
-
-    if (searchQuery === null) {
-      return response.status(404).json({ message: "Search query not found" });
-    }
-
-    return response.json(searchQuery);
+  async show({ params }: HttpContext) {
+    const searchQuery = await SearchQuery.findOrFail(params.id);
+    return searchQuery;
   }
 
-  async update({ params, request, response }: HttpContext) {
+  async update({ params, request }: HttpContext) {
+    const searchQuery = await SearchQuery.findOrFail(params.id);
     const data = await request.validateUsing(updateSearchQueryValidator);
-    const searchQuery = await SearchQuery.find(params.id);
-    if (searchQuery === null) {
-      return response.status(404).json({ message: "Search query not found" });
-    }
     await searchQuery.merge(data).save();
-    return response.json(searchQuery);
+    return searchQuery;
   }
 }
