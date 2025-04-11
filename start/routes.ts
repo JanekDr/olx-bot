@@ -24,3 +24,8 @@ router.get("api/v1/search-queries", [SearchQueriesController, "index"]);
 router.get("api/v1/search-queries/:id", [SearchQueriesController, "show"]);
 
 router.put("api/v1/search-queries/:id", [SearchQueriesController, "update"]);
+
+router.delete("api/v1/search-queries/:id", [
+  SearchQueriesController,
+  "destroy",
+]);
