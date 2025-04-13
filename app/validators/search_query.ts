@@ -5,7 +5,9 @@ export const createSearchQueryValidator = vine.compile(
     name: vine.string().trim(),
     minPrice: vine.number().positive(),
     maxPrice: vine.number().positive(),
-    locationId: vine.number(),
+    regionId: vine.number().positive(),
+    cityId: vine.number().positive(),
+    districtId: vine.number().positive(),
   }),
 );
 
@@ -14,6 +16,8 @@ export const updateSearchQueryValidator = vine.compile(
     name: vine.string().trim().optional(),
     minPrice: vine.number().positive().optional(),
     maxPrice: vine.number().positive().optional(),
-    locationId: vine.number().positive().optional(),
+    regionId: vine.number().positive().optional(),
+    cityId: vine.number().positive().optional(),
+    districtId: vine.number().positive().optional(),
   }),
 );
