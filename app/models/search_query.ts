@@ -16,7 +16,13 @@ export default class SearchQuery extends BaseModel {
   declare maxPrice: number;
 
   @column()
-  declare locationId: number;
+  declare regionId: number;
+
+  @column()
+  declare cityId: number;
+
+  @column()
+  declare districtId?: number;
 
   @column.dateTime()
   declare refreshedAt: DateTime;
