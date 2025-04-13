@@ -1,3 +1,5 @@
+import { DateTime } from "luxon";
+
 import { BaseCommand } from "@adonisjs/core/ace";
 import type { CommandOptions } from "@adonisjs/core/types/ace";
 
@@ -38,9 +40,16 @@ export default class SynchronizeOlx extends BaseCommand {
       this.logger.info(`Fetching offers for query: ${query.name} from ${url}`);
       const response = await fetch(url);
       const data = (await response.json()) as { data: OlxOffer[] };
+
       for (const offer of data.data) {
-        this.logger.info(offer.title);
+        const offerCreatedTime = DateTime.fromISO(offer.created_time);
+        if (offerCreatedTime > query.refreshedAt) {
+          this.logger.success(`New offer found for query: ${offer.title}`);
+        }
       }
+
+      query.refreshedAt = DateTime.now();
+      await query.save();
     }
   }
 }
