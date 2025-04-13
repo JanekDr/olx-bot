@@ -22,7 +22,7 @@ export default class SearchQuery extends BaseModel {
   declare cityId: number;
 
   @column()
-  declare districtId?: number;
+  declare districtId: number;
 
   @column.dateTime()
   declare refreshedAt: DateTime;
