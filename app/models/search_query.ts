@@ -25,7 +25,7 @@ export default class SearchQuery extends BaseModel {
   declare districtId: number;
 
   @column()
-  declare email: string | null;
+  declare email: string;
 
   @column.dateTime()
   declare refreshedAt: DateTime;
