@@ -2,6 +2,9 @@ import { DateTime } from "luxon";
 
 import { BaseCommand } from "@adonisjs/core/ace";
 import type { CommandOptions } from "@adonisjs/core/types/ace";
+import mail from "@adonisjs/mail/services/main";
+
+import env from "#start/env";
 
 import OlxOffer from "../app/types/olx_offers.js";
 
@@ -34,7 +37,7 @@ export default class SynchronizeOlx extends BaseCommand {
       if (query.maxPrice) {
         params.append("filter_float_price:to", query.maxPrice.toString());
       }
-      params.append("limit", "3");
+      params.append("limit", "5");
 
       const url = `https://www.olx.pl/api/v1/offers?category_id=1307&${params.toString()}`;
       this.logger.info(`Fetching offers for query: ${query.name} from ${url}`);
@@ -43,8 +46,19 @@ export default class SynchronizeOlx extends BaseCommand {
 
       for (const offer of data.data) {
         const offerCreatedTime = DateTime.fromISO(offer.created_time);
-        if (offerCreatedTime > query.refreshedAt) {
+        if (offerCreatedTime >= query.refreshedAt) {
           this.logger.success(`New offer found for query: ${offer.title}`);
+
+          await mail.send((message) => {
+            message
+              .to(query.email)
+              .from(env.get("SMTP_USERNAME"))
+              .subject(`New offers found for ${query.name}`).html(`
+                <h2>${offer.title}</h2>
+                <p>${offer.description}</p>
+                <a href="${offer.url}">Zobacz ofertę</a>
+              `);
+          });
         }
       }
 

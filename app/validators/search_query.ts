@@ -8,6 +8,7 @@ export const createSearchQueryValidator = vine.compile(
     regionId: vine.number().positive(),
     cityId: vine.number().positive(),
     districtId: vine.number().positive(),
+    email: vine.string().email(),
   }),
 );
 
@@ -19,5 +20,6 @@ export const updateSearchQueryValidator = vine.compile(
     regionId: vine.number().positive().optional(),
     cityId: vine.number().positive().optional(),
     districtId: vine.number().positive().optional(),
+    email: vine.string().email().optional(),
   }),
 );
